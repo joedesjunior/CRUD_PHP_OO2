@@ -1,20 +1,31 @@
-  <?php
-  
-  //namespace App\Model;
+<?php
 
-  class Connection
+namespace App\Model;
+
+class Connection
+{
+  private static $instance;
+
+  public static function getConn()
   {
-    private static $instance;
+    $username = 'root';
+    $password = '';
 
-    public static function getConn()
+    if (!isset(self::$instance)) 
     {
-      if (!isset(self::$instance)) 
+      try 
       {
-        self::$instance = new \PDO('mysql:host=localhost;dbname=CRUD_PHP_PDO;charset=utf', 'user=root;password=');
+        self::$instance = new \PDO('mysql:host=localhost;dbname=teste', $username, $password);
+        self::$instance->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
       } 
-      else 
+      catch (\PDOException $e)
       {
-        return self::$instance;
+        echo 'ERROR: ' . $e->getMessage();
       }
+      
     }
+    
+    return self::$instance;
+  
   }
+}
